@@ -1,0 +1,152 @@
+
+more:
+        https://www.tutorialspoint.com/jsf/jsf_basic_tags.htm
+
+
+-header:
+ - guest header:
+<h:link outcome="index" class="nav-link text-white active h5" value="Home"/>
+<h:link  outcome="login" class="nav-link text-white active h5" value="Login"/>
+<h:link  outcome="register" class="nav-link text-white active h5" value="Register"/>
+
+ - user header:
+<h:link outcome="home"  class="nav-link text-info active h5" value="Home"/> 
+<h:link outcome="add-job" class="nav-link text-info active h5" value="Add Job"/>
+ 
+<h:form>
+  <h:commandLink action="#{logoutBean.logout}" class="nav-link text-info active h5" value="Logout"/>
+ </h:form>
+ 
+-img:
+
+<h:graphicImage library="img" name="#{profileBean.homeViewModel.gender}.png" class="mx-auto img-thumbnail" width="200" height="200"/>
+
+- link:
+<h:link class="" value="Home" outcome="index"/>
+
+- command link:
+<h:commandLink class="" value="Logout"
+               action="#{logoutBean.logout}"/>
+
+- link:
+<p><h:link outcome="login"
+           value="Login"/> if you have an account or <h:link outcome="register"
+                                                             value="Register"/> now and connect to your friends.</p>
+- buton:
+
+<h:commandButton type="submit" class="btn btn-info text-white" value="Register" action="#{registerBean.register}"/>
+
+
+-input:
+<h:inputText  class="form-control" id="username" name="username" value="#{registerBean.model.username}"/>
+<h:inputSecret class="form-control" id="password" value="#{registerBean.model.password}"/>
+
+
+
+- form register:
+
+<h:form class="mx-auto w-15" method="post" >
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="username" class="h3 mb-2">Username</label>
+        </div>
+        <h:inputText  class="form-control" id="username" name="username" value="#{registerBean.model.username}"/>
+    </div>
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="password" class="h3 mb-2">Password</label>
+        </div>
+        <h:inputSecret class="form-control" id="password" value="#{registerBean.model.password}"/>
+    </div>
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="confirmPassword" class="h3 mb-2">Confirm Password</label>
+        </div>
+        <h:inputSecret class="form-control" id="confirmPassword" name="confirmPassword" value="#{registerBean.model.confirmPassword}"/>
+    </div>
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="gender" class="h3 mb-2">Gender</label>
+        </div>
+        <h:inputText class="form-control" id="gender" name="gender" value="#{registerBean.model.gender}"/>
+    </div>
+    <div class="button-holder d-flex justify-content-center">
+        <h:commandButton type="submit" class="btn btn-info text-white" value="Register" action="#{registerBean.register}"/>
+    </div>
+</h:form>
+
+
+
+-form login:
+
+<h:form class="mx-auto w-15" method="post">
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="username" class="h3 mb-2">Username</label>
+        </div>
+        <h:inputText class="form-control" id="username" name="username" value="#{loginBean.model.username}"/>
+    </div>
+    <div class="form-group">
+        <div class="label-holder d-flex justify-content-center">
+            <label for="password" class="h3 mb-2">Password</label>
+        </div>
+        <h:inputSecret type="password" class="form-control" id="password" name="password"
+                       value="#{loginBean.model.password}"/>
+    </div>
+    <div class="button-holder d-flex justify-content-center">
+        <h:commandButton action="#{loginBean.login}" type="submit" class="btn btn-info text-white"
+                         value="Login"/>
+    </div>
+</h:form>
+
+- repeat:
+
+<ui:repeat value="#{homeBean.models}" var="model" varStatus="status">
+    <h:outputText value="&lt;div class=&quot;row mb-4 d-flex justify-content-around&quot;&gt;"
+                  escape="false" rendered="#{status.index % 4 == 0}"/>
+    <div class="col-md-2 d-flex flex-column text-center">
+        <h:graphicImage library="img" name="#{model.gender}.png" class="img-thumbnail" width="200"
+                        height="200"/>
+        <h5 class="text-center">#{model.username}</h5>
+        <h:form>
+            <h:commandLink action="#{homeBean.addFriend(model.id)}" class="btn btn-info"
+                           value="Add Friend"/>
+        </h:form>
+    </div>
+    <h:outputText value="&lt;/div&gt;" escape="false" rendered="#{status.index % 4 == 3}"/>
+</ui:repeat>
+
+- repeat:
+<div class="row py-4 d-flex flex-column">
+    <ui:repeat value="#{friendBean.friends}" var="friend">
+        <div class="row d-flex flex-row col-md-5 mb-3 mx-auto">
+            <h:link outcome="profile?id=#{friend.id}" class="col-md-6 h5 d-inline-block text-center"
+                    value="#{friend.username}"/>
+            <h:form>
+                <h:commandButton action="#{friendBean.unfriend(friend.id)}"
+                                 class="col-md-3 text-center btn btn-danger d-inline-block" value="Unfriend"/>
+            </h:form>
+        </div>
+    </ui:repeat>
+</div>
+
+
+-repeat:
+
+<div class="row mb-4 d-flex justify-content-around">
+<ui:repeat var="job" varStatus="status" value="#{jobsListBean.jobs}">
+    <h:outputText value="&lt;div class='row mb-4 d-flex justify-content-around'&gt;" escape="false"
+                  rendered="#{status.index % 3 == 0}"/>
+    <div class="col-md-3 d-flex flex-column text-center">
+        <h:graphicImage library="img" name="#{job.sector}.jpg" class="img-thumbnail" width="300"
+                        height="300"/>
+        <h5 class="text-center">#{job.profession}</h5>
+        <h:link outcome="job-details?id=#{job.id}" class="btn btn-info" value="Details"/>
+        <h:link outcome="delete-job?id=#{job.id}" class="btn btn-danger" value="Delete"/>
+    </div>
+
+    <h:outputText value="&lt;/div&gt;" escape="false" rendered="#{status.index % 3 == 2}"/>
+</ui:repeat>
+<h:outputText value="&lt;/div&gt;" escape="false"
+              rendered="#{jobsListBean.jobs().size() % 3 != 0}"/>
+</div>
